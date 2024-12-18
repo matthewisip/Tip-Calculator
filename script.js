@@ -1,29 +1,38 @@
-document.getElementById('tipPercentage').addEventListener('change', function () {
-    const customTipContainer = document.getElementById('customTipContainer');
-    customTipContainer.style.display = this.value === 'custom' ? 'block' : 'none';
+let selectedTip = 0.20; // Default tip percentage
+
+// Tip selection logic
+document.querySelectorAll('input[name="tipOption"]').forEach(radio => {
+    radio.addEventListener('change', function () {
+        if (this.value === 'custom') {
+            selectedTip = parseFloat(document.getElementById('customTip').value) / 100 || 0;
+        } else {
+            selectedTip = parseFloat(this.value);
+        }
+    });
 });
 
+// Update tip when custom input changes
+document.getElementById('customTip').addEventListener('input', function () {
+    const customRadio = document.querySelector('input[value="custom"]');
+    customRadio.checked = true;
+    selectedTip = parseFloat(this.value) / 100 || 0;
+});
+
+// Calculate Tip
 document.getElementById('calculateButton').addEventListener('click', function () {
     const billAmount = parseFloat(document.getElementById('billAmount').value);
-    let tipPercentage = document.getElementById('tipPercentage').value;
-
-    if (tipPercentage === 'custom') {
-        tipPercentage = parseFloat(document.getElementById('customTip').value) / 100;
-    } else {
-        tipPercentage = parseFloat(tipPercentage);
-    }
 
     if (isNaN(billAmount) || billAmount <= 0) {
         alert('Please enter a valid bill amount.');
         return;
     }
 
-    if (isNaN(tipPercentage) || tipPercentage < 0) {
+    if (isNaN(selectedTip) || selectedTip < 0) {
         alert('Please enter a valid tip percentage.');
         return;
     }
 
-    const tipAmount = billAmount * tipPercentage;
+    const tipAmount = billAmount * selectedTip;
     const totalAmount = billAmount + tipAmount;
 
     document.getElementById('tipAmount').textContent = tipAmount.toFixed(2);
