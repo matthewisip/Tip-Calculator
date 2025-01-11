@@ -34,12 +34,10 @@ input[type="number"] {
 }
 
 input[type="radio"] {
-    appearance: none;
     width: 15px;
     height: 15px;
     border: 2px solid #000;
     border-radius: 50%;
-    position: relative;
     cursor: pointer;
 }
 
